@@ -1,6 +1,4 @@
-class Car < BaseController
-  extend Params
-
+class Car < Documentary::BaseController
   params :index do
     optional(:type)
     required(:vintage)

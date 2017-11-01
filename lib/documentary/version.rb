@@ -1,3 +1,3 @@
-module Wheel2
+module Documentary
   VERSION = "0.1.0"
 end

@@ -1,11 +1,16 @@
 require 'bundler'
 Bundler.require
 
-require File.join(File.dirname(__FILE__), 'lib', 'brain_rack')
-require File.join(File.dirname(__FILE__), 'lib', 'request_controller')
+require File.join(File.dirname(__FILE__), 'lib', 'documentary', 'core')
 
-BrainRackApplication = BrainRack.new
+class App
+  attr_reader :router
 
+  def initialize
+    @router = Documentary::Router.new
+  end
+end
+DocumentaryApp = App.new
 require File.join(File.dirname(__FILE__), 'config', 'routes')
 
-run RequestController.new
+run Documentary::Core.new

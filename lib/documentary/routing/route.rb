@@ -1,5 +1,3 @@
-require File.join(File.dirname(__FILE__), '../', 'app', 'controllers', 'base_controller')
-
 class Route
   attr_accessor :klass_name, :path, :instance_method
 
@@ -20,6 +18,6 @@ class Route
   end
 
   def handle_requires
-    require File.join(File.dirname(__FILE__), '../', 'app', 'controllers', klass_name.downcase)
+    require File.join(File.dirname(__FILE__), '../../../', 'app', 'controllers', klass_name.downcase)
   end
 end

@@ -1,6 +1,4 @@
-class Custom < BaseController
-  extend Params
-
+class Custom < Documentary::BaseController
   params :index do
     optional(:name)
     required(:title)
