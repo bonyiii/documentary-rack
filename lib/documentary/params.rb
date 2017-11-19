@@ -39,14 +39,15 @@ module Documentary
 
     private
 
-    def build(meth, required: true, **args, &block)
+    def build(meth, required: , type: "Any", desc: nil, &block)
       if block
-        @hash[meth] = self.class.build(&block)
-        @hash[meth].merge!(args)
+        hash[meth] = self.class.build(&block)
       else
-        @hash[meth] = args
+        hash[meth] = {}
       end
-      @hash[meth][:required] = required
+      hash[meth][:type] = type
+      hash[meth][:desc] = desc
+      hash[meth][:required] = required
     end
   end
 end
