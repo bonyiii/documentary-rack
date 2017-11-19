@@ -30,13 +30,23 @@ module Documentary
     end
 
     def required(meth, **args, &block)
-      @hash[meth] = block ? self.class.build(&block) : args
-      @hash[meth][:required] = true
+      build(meth, required: true, **args, &block)
     end
 
     def optional(meth, **args, &block)
-      @hash[meth] = block ? self.class.build(&block) : args
-      @hash[meth][:required] = false
+      build(meth, required: false, **args, &block)
+    end
+
+    private
+
+    def build(meth, required: true, **args, &block)
+      if block
+        @hash[meth] = self.class.build(&block)
+        @hash[meth].merge!(args)
+      else
+        @hash[meth] = args
+      end
+      @hash[meth][:required] = required
     end
   end
 end

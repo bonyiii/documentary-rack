@@ -45,7 +45,7 @@ describe Documentary::Params do
       before do
         subject.params :show do
           optional(:type)
-          required(:vintage) do
+          required(:vintage, type: Array) do
             required(:year, type: Integer, desc: 'Year of the vintage')
             optional(:month, type: Integer)
             optional(:day, type: Integer)
@@ -57,6 +57,7 @@ describe Documentary::Params do
       it { expect(subject.params[:show][:vintage][:year][:type]).to eq(Integer) }
       it { expect(subject.params[:show][:vintage][:year][:desc]).to eq(year_desc) }
       it { expect(subject.params[:show][:vintage][:required]).to eq(true) }
+      it { expect(subject.params[:show][:vintage][:type]).to eq(Array) }
       it { expect(subject.params[:show][:vintage][:year][:required]).to eq(true) }
       it { expect(subject.params[:show][:vintage][:day][:required]).to eq(false) }
     end
