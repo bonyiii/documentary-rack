@@ -1,14 +1,16 @@
 # coding: utf-8
 module Documentary
   module Params
-    attr_reader :_params
 
     # http://randycoulman.com/blog/2013/10/01/configuration-blocks/
-    def params(action, &block)
+    def params(action = nil, &block)
+      return @params unless action
+
       @params ||= {}
-      @params[action.to_s] = MyParams.new(&block)
+      @params[action.to_s] = Param.new(&block)
 
       puts @params.inspect
+      @params
     end
 
     def print_params
@@ -16,7 +18,7 @@ module Documentary
     end
   end
 
-  class MyParams
+  class Param
     def initialize(&block)
       @required = []
       @optional = []

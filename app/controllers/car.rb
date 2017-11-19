@@ -12,7 +12,7 @@ class Car < Documentary::BaseController
     end
   end
 
-  params :edit do
+  params :show do
     optional(:type)
     required(:vintage)
   end

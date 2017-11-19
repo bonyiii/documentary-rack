@@ -5,4 +5,5 @@ gemspec
 
 gem 'rack'
 gem 'byebug'
+gem 'shotgun'
 #gem 'hanami-router'

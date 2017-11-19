@@ -1,5 +1,5 @@
 DocumentaryApp.router.config do
-  get "/test", to: "custom#index"
+  get "/test", to: "person#index"
   get "/cars", to: "car#index"
-  get /.*/, to: "custom#show"
+  get /.*/, to: "person#show"
 end
