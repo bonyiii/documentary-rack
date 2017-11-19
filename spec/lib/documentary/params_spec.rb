@@ -2,6 +2,8 @@ require 'spec_helper'
 
 class TestController
   extend Documentary::Params
+
+  def show; end
 end
 
 describe Documentary::Params do
@@ -18,6 +20,32 @@ describe Documentary::Params do
   end
 
   describe "#params" do
+    context "method defined before params call" do
+      before { expect(subject).to receive(:public_method_defined?).and_return(true) }
+
+      it "should good to go" do
+        expect{
+          subject.params(:edit)
+        }.not_to raise_error Documentary::PublicMethodMissing, "'TestController' has no public instance method 'edit' defined!"
+      end
+    end
+
+    context "method defined after params call" do
+      before { expect(subject).to receive(:public_method_defined?).and_return(false) }
+
+      it "should blow up" do
+        expect{
+          subject.params(:edit)
+        }.to raise_error Documentary::PublicMethodMissing, "'TestController' has no public instance method 'edit' defined!"
+      end
+    end
+
+    context "excpetions" do
+      it "should raise error if object not respond to action requested by params" do
+        expect{ subject.params(:edit) }.to raise_error Documentary::PublicMethodMissing, "'TestController' has no public instance method 'edit' defined!"
+      end
+    end
+
     context "without nesting" do
       let(:year_desc) { 'Year of the vintage' }
 

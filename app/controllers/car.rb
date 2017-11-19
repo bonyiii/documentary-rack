@@ -1,9 +1,4 @@
 class Car < Documentary::BaseController
-  params :index do
-    optional(:type)
-    required(:vintage)
-    required(:cc)
-  end
   def index
     puts self.class.print_params[:index]
     Response.new.tap do |response|
@@ -11,16 +6,20 @@ class Car < Documentary::BaseController
       response.status_code = 200
     end
   end
-
-  params :show do
+  params :index do
     optional(:type)
     required(:vintage)
+    required(:cc)
   end
+
   def show
     Response.new.tap do |response|
       response.body = 'Car edit'
       response.status_code = 200
     end
   end
-
+  params :show do
+    optional(:type)
+    required(:vintage)
+  end
 end

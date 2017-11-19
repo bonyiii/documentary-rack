@@ -1,10 +1,12 @@
 # coding: utf-8
 module Documentary
   module Params
-
-    # http://randycoulman.com/blog/2013/10/01/configuration-blocks/
     def params(action = nil, **args, &block)
       return @params unless action
+
+      unless public_method_defined?(action)
+        fail(Documentary::PublicMethodMissing, "'#{self}' has no public instance method '#{action}' defined!" )
+      end
 
       @params ||= {}
       @params[action] = ParamBuilder.build(&block)
