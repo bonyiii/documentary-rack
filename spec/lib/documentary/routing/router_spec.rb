@@ -12,6 +12,7 @@ describe Documentary::Router do
   before do
     router.config do
       get "/people", to: "person#index"
+      put "/people", to: "person#update"
       get /.*/, to: "person#show"
     end
   end
@@ -19,7 +20,7 @@ describe Documentary::Router do
   describe "#route_for" do
     subject { router.route_for(rack_env) }
 
-    context "get" do
+    context "when method GET" do
       let(:request_method) { 'GET' }
 
       context "when path is defined" do
@@ -37,14 +38,23 @@ describe Documentary::Router do
       end
     end
 
-    context "option" do
-      let(:request_method) { 'OPTION' }
+    context "when method OPTIONS" do
+      let(:request_method) { 'OPTIONS' }
 
       context "when path is defined" do
         let(:path_info) { '/people' }
 
-        it { expect(subject.path).to eq("/people") }
-        it { expect(subject.instance_method).to eq("index") }
+        context "when options method is not defined the default is GET" do
+          it { expect(subject.path).to eq("/people") }
+          it { expect(subject.instance_method).to eq("index") }
+        end
+
+        context "when options method defined as PUT" do
+          before { rack_env.merge!(options_method) }
+          let(:options_method) { { 'OPTIONS_METHOD' => 'PUT' } }
+          it { expect(subject.path).to eq("/people") }
+          it { expect(subject.instance_method).to eq("update") }
+        end
       end
 
       context "when path is not defined" do

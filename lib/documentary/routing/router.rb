@@ -12,13 +12,20 @@ module Documentary
       instance_eval &block
     end
 
-    def get(path, options = {})
-      @routes[:get] << [path, parse_to(options[:to])]
+    [:get, :patch, :post, :put].each do |name|
+      define_method(name) do |path, options = {}|
+        @routes[name] << [path, parse_to(options[:to])]
+      end
     end
 
     def route_for(env)
       path = env['PATH_INFO']
       method = env['REQUEST_METHOD'].downcase.to_sym
+
+      if method == :options
+        method = (env['OPTIONS_METHOD'] || :get).downcase.to_sym
+      end
+
       route_array = routes[method].detect do |route|
         case route.first
         when String
