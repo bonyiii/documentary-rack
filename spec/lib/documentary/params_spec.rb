@@ -21,12 +21,22 @@ describe Documentary::Params do
 
   describe "#params" do
     context "method defined before params call" do
-      before { expect(subject).to receive(:public_method_defined?).and_return(true) }
+      before {
+        Documentary::ParamBuilder.stub(:build) do
+          { type: 'Foo', vintage: 'Bar' }
+        end
+        expect(subject).to receive(:public_method_defined?).and_return(true)
+      }
 
       it "should good to go" do
         expect{
           subject.params(:edit)
-        }.not_to raise_error Documentary::PublicMethodMissing, "'TestController' has no public instance method 'edit' defined!"
+        }.not_to raise_error
+      end
+
+      context "params method should be called with an action first time per action" do
+        before { subject.params(:edit) }
+        it { expect(subject.params[:edit][:type]).to eq('Foo') }
       end
     end
 
